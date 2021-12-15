@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BitBucketRepos</string>
+    <string name="language">Language: %s</string>
+</resources>
