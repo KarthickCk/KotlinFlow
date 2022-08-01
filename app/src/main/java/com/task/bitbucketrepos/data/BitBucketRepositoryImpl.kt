@@ -1,5 +1,6 @@
 package com.task.bitbucketrepos.data
 
+import androidx.annotation.VisibleForTesting
 import com.task.bitbucketrepos.domain.BitBucketApi
 import com.task.bitbucketrepos.domain.BitBucketData
 import com.task.bitbucketrepos.domain.IBitBucketRepository
@@ -19,19 +20,18 @@ class BitBucketRepositoryImpl @Inject constructor(
             .flowOn(ioDispatcher)
     }
 
-    private fun getNetworkData(): Flow<List<BitBucketData.RepoData>>  {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun getNetworkData(): Flow<List<BitBucketData.RepoData>>  {
         return flow {
             emit(bitBucketApi.getRepoList().repoList)
         }.map {
             iCacheData.saveData(it)
             it
         }
-            .catch {
-                emptyList<List<BitBucketData.RepoData>>()
-            }
     }
 
-    private fun getCachedData(): Flow<List<BitBucketData.RepoData>> {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    fun getCachedData(): Flow<List<BitBucketData.RepoData>> {
         return flow {
             emit(iCacheData.getData())
         }

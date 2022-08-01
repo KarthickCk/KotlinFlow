@@ -20,13 +20,26 @@ data class BitBucketData(
         val links: Links,
         @SerializedName("project")
         val project: Project
-    ) : Parcelable
+    ) : Parcelable {
+        companion object {
+            fun mockRepo() = RepoData(
+                "1234",
+                "EN",
+                Links.mockLinks(),
+                Project.mockProduct()
+            )
+        }
+    }
 
     @Parcelize
     data class Project(
         @SerializedName("name")
         val name: String
-    ) : Parcelable
+    ) : Parcelable {
+        companion object {
+            fun mockProduct() = Project("name")
+        }
+    }
 
     @Parcelize
     data class Links(
@@ -38,5 +51,17 @@ data class BitBucketData(
             @SerializedName("href")
             val imageUrl: String
         ) : Parcelable
+
+        companion object {
+            fun mockLinks() = Links(Avatar("imageUrl"))
+        }
+    }
+
+    companion object {
+        fun mock() = BitBucketData(
+            repoList = listOf(
+                RepoData.mockRepo()
+            )
+        )
     }
 }
